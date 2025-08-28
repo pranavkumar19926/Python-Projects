@@ -18,13 +18,13 @@ Includes **difficulty levels, colorful ASCII-art title, hints, and win/lose mess
 ## 📸 Demo
 
 ### 🏁 Game Start
-![Game Start](images/Screenshot 2025-08-28 184445.png)
+![Game Start](https://github.com/pranavkumar19926/Python-Projects/blob/main/Number%20guessing%20game/Screenshot%202025-08-28%20184445.png)
 
 ### 🎉 Correct Guess
-![Correct Guess](images/Screenshot 2025-08-28 184553.png)
+![Correct Guess](https://github.com/pranavkumar19926/Python-Projects/blob/main/Number%20guessing%20game/Screenshot%202025-08-28%20184553.png)
 
 ### 💀 Game Over
-![Game Over](images/Screenshot 2025-08-28 184649.png)
+![Game Over](https://github.com/pranavkumar19926/Python-Projects/blob/main/Number%20guessing%20game/Screenshot%202025-08-28%20184649.png)
 
 ---
 
@@ -42,3 +42,23 @@ Includes **difficulty levels, colorful ASCII-art title, hints, and win/lose mess
    ```bash
    git clone https://github.com/pranavkumar19926/number-guessing-game.git
    cd number-guessing-game
+Install dependencies:
+
+pip install pyfiglet colorama
+
+
+Run the game:
+
+python guessing_game.py
+
+🌟 Future Enhancements
+
+Add replay option (play multiple rounds without restarting program)
+
+Track scores and best attempts
+
+Build a GUI version using Tkinter or PyQt
+
+📜 License
+
+This project is open-source and free to use.
