@@ -38,8 +38,9 @@ This project replicates the core logic of the classic **Blackjack (21)** card ga
 ## ▶️ How to Run
 1. Clone this repository:
    ```bash
-   git clone https://github.com/<your-username>/<your-repo-name>.git
-   cd <your-repo-name>
+   git clone https://github.com/pranavkumar19926/Blackjack cards.git
+cd Blackjack cards
+
 
 Open the Jupyter Notebook:
 
