@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}My Orders{% endblock %}
+{% block content %}
+<h2 class="mb-4">My Orders</h2>
+
+{% if not orders %}
+  <div class="alert alert-light">You have no orders yet.</div>
+{% else %}
+  <div class="list-group">
+    {% for o in orders %}
+      <div class="list-group-item mb-3 shadow-sm">
+        <div class="d-flex justify-content-between">
+          <div>
+            <strong>Order #{{ o.id }}</strong>
+            <div class="small text-muted">Placed: {{ o.created_at.strftime('%Y-%m-%d %H:%M') if o.created_at else '-' }}</div>
+            <div class="small text-muted">Status: <span class="badge bg-{{ 'success' if o.status=='paid' else 'secondary' }}">{{ o.status }}</span></div>
+          </div>
+          <div class="text-end">
+            <div class="h5 mb-1">{{ (o.total_amount if o.total_amount is not none else 0)|inr }}</div>
+            <a href="{{ url_for('shop.order_detail', oid=o.id) }}" class="btn btn-sm btn-outline-primary mt-2">View</a>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <ul class="mb-0 small">
+            {% for it in o.items %}
+              <li>
+                {{ (it.quantity if it.quantity is not none else (it.qty if it.qty is not none else 1)) }} ×
+                {{ (it.product_name if it.product_name else (it.product.name if it.product else 'Item')) }}
+                — {{ (it.unit_price if it.unit_price is not none else (it.price if it.price is not none else 0))|inr }}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+{% endblock %}

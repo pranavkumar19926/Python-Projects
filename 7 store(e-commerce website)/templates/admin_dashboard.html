@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<h2>Admin Dashboard</h2>
+
+<h4>Users</h4>
+<table class="table mb-4">
+  <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Seller</th><th>Admin</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for u in users %}
+    <tr>
+      <td>{{ u.id }}</td>
+      <td>{{ u.username }}</td>
+      <td>{{ u.email }}</td>
+      <td>{{ 'Yes' if u.is_seller else 'No' }}</td>
+      <td>{{ 'Yes' if u.is_admin else 'No' }}</td>
+      <td>
+        <form method="post" action="{{ url_for('admin.toggle_seller', uid=u.id) }}" style="display:inline-block;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-sm btn-outline-primary">Toggle Seller</button>
+        </form>
+
+        <form method="post" action="{{ url_for('admin.toggle_admin', uid=u.id) }}" style="display:inline-block;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-sm btn-outline-secondary">Toggle Admin</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h4>Products</h4>
+<table class="table mb-4">
+  <thead><tr><th>ID</th><th>Name</th><th>Seller</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for p in products %}
+    <tr>
+      <td>{{ p.id }}</td>
+      <td>{{ p.name }}</td>
+      <td>{% if p.seller %}{{ p.seller.username }}{% else %}7Store{% endif %}</td>
+      <td>{{ p.price|inr if (p.price is not none) else '-' }}</td>
+      <td>{{ p.stock }}</td>
+      <td>
+        <a href="{{ url_for('seller.product_edit', pid=p.id) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+
+        <form method="post" action="{{ url_for('admin.product_delete', pid=p.id) }}" style="display:inline-block;" onsubmit="return confirm('Delete product?');">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-sm btn-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h4>Orders</h4>
+<table class="table">
+  <thead><tr><th>ID</th><th>User</th><th>Total</th><th>Status</th><th>Created</th><th>Set Status</th></tr></thead>
+  <tbody>
+    {% for o in orders %}
+    <tr>
+      <td>{{ o.id }}</td>
+      <td>{{ o.user_id or 'Guest' }}</td>
+      <td>{{ o.total_amount|inr }}</td>
+      <td>{{ o.status }}</td>
+      <td>{{ o.created_at.strftime('%Y-%m-%d') }}</td>
+      <td>
+        <form method="post" action="{{ url_for('admin.set_order_status', oid=o.id) }}" class="d-flex align-items-center">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <select name="status" class="form-select form-select-sm me-2" style="width:auto;">
+            <option value="pending" {% if o.status=='pending' %}selected{% endif %}>pending</option>
+            <option value="paid" {% if o.status=='paid' %}selected{% endif %}>paid</option>
+            <option value="shipped" {% if o.status=='shipped' %}selected{% endif %}>shipped</option>
+            <option value="cancelled" {% if o.status=='cancelled' %}selected{% endif %}>cancelled</option>
+          </select>
+          <button class="btn btn-sm btn-primary">Set</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

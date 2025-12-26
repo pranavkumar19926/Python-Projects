@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock %}
+{% block content %}
+<h2 class="mb-3">Checkout</h2>
+
+{% if not items %}
+  <div class="alert alert-light">Your cart is empty. Add items before checking out.</div>
+{% else %}
+  <div class="row">
+    <div class="col-lg-7">
+      <div class="card p-3 mb-3">
+        <h5 class="mb-3">Items</h5>
+        <ul class="list-group">
+          {% for it in items %}
+            {% set p = it.product %}
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div>
+                <strong>{{ p.name }}</strong>
+                <div class="small text-muted">{{ p.description or '' }}</div>
+                <div class="small text-muted">Qty: {{ it.qty }}</div>
+              </div>
+              <div class="text-end">
+                <div>{{ (p.price * it.qty)|inr }}</div>
+                <div class="small text-muted">{{ p.price|inr }} each</div>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="card p-3 shadow-sm">
+        <h5 class="mb-3">Order Summary</h5>
+        <p class="mb-1 small text-muted">Items: <strong>{{ items|length }}</strong></p>
+        <p class="mb-3 h4">Total: <strong>{{ total|inr }}</strong></p>
+
+        <div class="d-grid gap-2">
+
+          <a href="{{ url_for('shop.cart_view') }}" class="btn btn-outline-secondary">
+            Back to Cart
+          </a>
+
+          <!-- ⭐ STRIPE PAYMENT BUTTON — NEWLY ADDED ⭐ -->
+          <form method="post" action="{{ url_for('shop.create_checkout_session') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-primary w-100">
+              Pay with Card (Stripe)
+            </button>
+          </form>
+          <!-- ⭐ END STRIPE BUTTON -->
+
+        </div>
+
+        {% if address %}
+        <div class="mt-3 small">
+          <h6>Ship to:</h6>
+          <div>{{ address.full_name }}</div>
+          <div>{{ address.line1 }} {{ address.line2 or '' }}</div>
+          <div>{{ address.city }}, {{ address.state }} - {{ address.pincode }}</div>
+          <div class="small text-muted">Phone: {{ address.phone }}</div>
+        </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}

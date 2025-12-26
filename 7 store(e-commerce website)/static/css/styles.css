@@ -1,0 +1,70 @@
+/* 7Store — handcrafted, modern clean UI */
+:root{
+  --accent: #2563eb; /* blue accent */
+  --muted: #6b7280;
+  --card: #ffffff;
+  --bg: #f6f7fb;
+  --radius: 12px;
+  --shadow-sm: 0 6px 18px rgba(17,24,39,0.06);
+}
+
+* { box-sizing: border-box; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: var(--bg);
+  color: #111827;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  margin: 0;
+}
+
+a { text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+.navbar { border-bottom: 1px solid rgba(15,23,42,0.04); }
+.brand-mark {
+  height:40px; width:40px; display:inline-flex; align-items:center; justify-content:center;
+  background:var(--accent); color:white; border-radius:8px; font-weight:700; font-size:18px;
+}
+.brand-text { font-weight:700; font-size:20px; color:#0f172a; }
+
+.search-input {
+  border-radius: 999px; padding-left:18px; padding-right:18px;
+  box-shadow: none; border:1px solid rgba(15,23,42,0.06);
+}
+
+/* Hero */
+.hero-box {
+  background: linear-gradient(180deg, rgba(37,99,235,0.04), rgba(37,99,235,0.01));
+  border-radius: 12px; padding: 28px;
+  box-shadow: var(--shadow-sm);
+}
+.hero-image { max-width:260px; opacity:0.95; }
+
+/* Product card */
+.product-card {
+  background: var(--card); border-radius: var(--radius); overflow: hidden;
+  transition: transform .18s ease, box-shadow .18s ease; border:1px solid rgba(15,23,42,0.04);
+}
+.product-card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(2,6,23,0.08); }
+.product-media img { width:100%; height:180px; object-fit:cover; display:block; }
+
+/* Product detail */
+.product-gallery { border-radius:12px; overflow:hidden; background:linear-gradient(180deg,#fff,#fbfdff); padding:6px; }
+.product-gallery .main-photo { width:100%; border-radius:8px; }
+
+/* Cart */
+.list-group-item img { border-radius:8px; width:100%; height:auto; object-fit:cover; }
+
+/* Footer */
+.site-footer { background: #fff; border-top:1px solid rgba(15,23,42,0.04); }
+
+/* Buttons */
+.btn-primary { background: var(--accent); border-color: var(--accent); }
+.btn-outline-primary { color: var(--accent); border-color: rgba(37,99,235,0.12); }
+
+/* Responsive tweaks */
+@media (max-width: 767px){
+  .hero-box { padding:18px; }
+  .product-media img { height:140px; }
+}

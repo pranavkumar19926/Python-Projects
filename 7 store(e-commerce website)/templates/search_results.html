@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Search: {{ query }}{% endblock %}
+{% block content %}
+<h3 class="mb-3">Results for: "{{ query }}"</h3>
+{% if products|length == 0 %}
+  <div class="alert alert-light">No products found. Try another search.</div>
+{% endif %}
+
+<div class="row g-3">
+  {% for p in products %}
+  <div class="col-6 col-md-4 col-lg-3">
+    <div class="product-card h-100 shadow-sm">
+      <div class="product-media">
+        {% if p.image_filename %}
+          <img src="{{ url_for('uploaded_file', filename=p.image_filename) }}" alt="{{ p.name }}">
+        {% else %}
+          <img src="{{ url_for('static', filename='images/product-placeholder.png') }}" alt="{{ p.name }}">
+        {% endif %}
+      </div>
+      <div class="p-3 d-flex flex-column">
+        <h6 class="product-title mb-0">{{ p.name }}</h6>
+        <span class="text-primary fw-semibold mb-2">{{ p.price|inr }}</span>
+        <p class="text-muted small text-truncate mb-3">{{ p.description or '' }}</p>
+        <div class="mt-auto d-flex justify-content-between align-items-center">
+          <a href="{{ url_for('shop.product_detail', slug=p.slug) }}" class="btn btn-outline-primary btn-sm">View</a>
+          <form method="post" action="{{ url_for('shop.add_to_cart', product_id=p.id) }}" class="d-inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="qty" value="1">
+            <button class="btn btn-primary btn-sm">Add</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

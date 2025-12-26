@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Payment Successful{% endblock %}
+{% block content %}
+<div class="py-5 text-center">
+  <h1 class="display-6">Payment successful 🎉</h1>
+  <p class="lead text-muted">Thank you — your order <strong>#{{ order.id }}</strong> has been placed.</p>
+
+  <div class="card mx-auto mt-4" style="max-width:720px;">
+    <div class="card-body">
+      <p><strong>Status:</strong> {{ order.status }}</p>
+      <p><strong>Total:</strong> {{ order.total_amount|inr }}</p>
+      <p><strong>Placed:</strong> {{ order.created_at.strftime('%Y-%m-%d %H:%M') if order.created_at else '-' }}</p>
+
+      <h6 class="mt-3">Items</h6>
+      <ul class="small">
+        {% for it in items_info %}
+          <li>{{ it.quantity }} × {{ it.product_name }} — {{ it.unit_price|inr }} each</li>
+        {% endfor %}
+      </ul>
+
+      <div class="mt-4">
+        <a href="{{ url_for('shop.my_orders') }}" class="btn btn-outline-primary">View My Orders</a>
+        <a href="{{ url_for('shop.home') }}" class="btn btn-primary ms-2">Continue Shopping</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Your Cart{% endblock %}
+{% block content %}
+<h2 class="mb-3">Your Cart</h2>
+
+{% if not items %}
+  <div class="alert alert-light">Your cart is empty. Browse products and add what you like.</div>
+{% else %}
+  <div class="row">
+    <div class="col-lg-8">
+      <form method="post" action="{{ url_for('shop.update_cart') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="list-group mb-3">
+          {% for it in items %}
+          <div class="list-group-item d-flex align-items-center">
+            <div style="width:100px;">
+              {% if it.product.image_filename %}
+                <img src="{{ url_for('uploaded_file', filename=it.product.image_filename) }}" class="img-fluid" alt="{{ it.product.name }}">
+              {% else %}
+                <img src="{{ url_for('static', filename='images/product-placeholder.png') }}" class="img-fluid" alt="{{ it.product.name }}">
+              {% endif %}
+            </div>
+
+            <div class="ms-3 flex-grow-1">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <h6 class="mb-1">{{ it.product.name }}</h6>
+                  <p class="small text-muted mb-1">{{ it.product.description or '' }}</p>
+
+                  <div class="d-flex align-items-center mt-2">
+                    <label class="me-2 small">Qty</label>
+                    <input name="qty_{{ it.product.id }}" type="number" value="{{ it.qty }}" min="0" class="form-control" style="width:90px;">
+                    <button type="submit" class="btn btn-link small text-danger ms-2">Update Cart</button>
+                  </div>
+                </div>
+
+                <div class="text-end">
+                  <div class="fw-semibold">{{ (it.product.price * it.qty)|inr }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </form>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card p-3 shadow-sm">
+        <h5 class="mb-3">Order Summary</h5>
+        <p class="mb-2 small text-muted">Items: <strong>{{ items|length }}</strong></p>
+        <p class="mb-3 h5">Total: <strong>{{ total|inr }}</strong></p>
+        <a href="{{ url_for('shop.checkout_address') }}" class="btn btn-primary w-100">Proceed to Checkout</a>
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}

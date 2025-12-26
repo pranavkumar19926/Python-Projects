@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Shipping Address{% endblock %}
+{% block content %}
+<h2 class="mb-4">Shipping Address</h2>
+
+<form method="post">
+  {{ form.hidden_tag() }}
+
+  <div class="row">
+    <div class="col-md-6 mb-3">{{ form.full_name.label }} {{ form.full_name(class="form-control") }}</div>
+    <div class="col-md-6 mb-3">{{ form.phone.label }} {{ form.phone(class="form-control") }}</div>
+  </div>
+
+  <div class="mb-3">{{ form.line1.label }} {{ form.line1(class="form-control") }}</div>
+  <div class="mb-3">{{ form.line2.label }} {{ form.line2(class="form-control") }}</div>
+
+  <div class="row">
+    <div class="col-md-4 mb-3">{{ form.city.label }} {{ form.city(class="form-control") }}</div>
+    <div class="col-md-4 mb-3">{{ form.state.label }} {{ form.state(class="form-control") }}</div>
+    <div class="col-md-4 mb-3">{{ form.pincode.label }} {{ form.pincode(class="form-control") }}</div>
+  </div>
+
+  <button class="btn btn-primary mt-2">{{ form.submit.label }}</button>
+</form>
+
+{% endblock %}

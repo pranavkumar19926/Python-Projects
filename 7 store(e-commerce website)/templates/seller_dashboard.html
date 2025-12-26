@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Seller Dashboard{% endblock %}
+{% block content %}
+
+<h2 class="mb-4">Seller Dashboard</h2>
+<a href="{{ url_for('seller.product_new') }}" class="btn btn-primary mb-3">Add New Product</a>
+
+<table class="table align-middle shadow-sm bg-white rounded">
+    <thead class="table-light">
+        <tr>
+            <th>ID</th><th>Product</th><th>Price</th><th>Stock</th><th>Image</th><th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in products %}
+        <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.name }}</td>
+            <td>{{ p.price|inr }}</td>
+            <td>{{ p.stock }}</td>
+            <td style="width:100px;">
+                {% if p.image_filename %}
+                  <img src="{{ url_for('uploaded_file', filename=p.image_filename) }}" style="height:60px; object-fit:cover;">
+                {% else %}
+                  <img src="{{ url_for('static', filename='images/product-placeholder.png') }}" style="height:60px; object-fit:cover;">
+                {% endif %}
+            </td>
+            <td>
+                <a href="{{ url_for('seller.product_edit', pid=p.id) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+
+                <form method="post" action="{{ url_for('seller.product_delete', pid=p.id) }}" style="display:inline-block;" onsubmit="return confirm('Delete this product?');">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button class="btn btn-sm btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
